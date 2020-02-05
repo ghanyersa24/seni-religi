@@ -12,57 +12,90 @@ function r($value)
 }
 
 // --------------- helper tanggal
-
-function tgl($tgl)
+function date_valid($params, $value)
 {
-	$check = strtotime($tgl);
+	$check = strtotime($value);
+	if ($check != false) {
+		return date("Y-m-d H:i:s", strtotime($value));
+	} else
+		error("$params tidak sesuai dengan ketentuan dd-mm-YYYY atau YYYY-mm-dd");
+}
+
+function date_now($params, $value)
+{
+	$check = strtotime($value);
 	if ($check != false) {
 		if ($check > strtotime(date("Y-m-d H:i:s")))
-			return date("Y-m-d H:i", strtotime($tgl));
+			return date("Y-m-d H:i", strtotime($value));
 		else {
-			error("tanggal sudah tidak bisa dipilih");
+			error("$params yang dipilih tidak bisa digunakan");
 		}
 	} else
-		error("tanggal tidak sesuai dengan ketentuan");
+		error("$params tidak sesuai dengan ketentuan dd-mm-YYYY atau YYYY-mm-dd");
 }
 
 // --------------- helper inputan
-
 function post($params, $constrains = null)
 {
 
-	if (isset($_POST[$params])) {
-		$value = $_POST[$params];
+	if (isset($_POST[$params]) && $_POST[$params] !== "") {
+		$value = strip_tags(r($_POST[$params]));
 		if (!is_null($constrains)) {
 			$constrains = explode('|', $constrains);
-			foreach ($constrains as $check) {
-				if ($check == 'is_email') {
-					is_email($value);
-				}
+			foreach ($constrains as $method) {
+				if (strpos($method, '->')) {
+					$tmp = explode('->', $method);
+					$tmp[0]($params, $value, $tmp[1]);
+				} else
+					$method($params, $value);
 			}
 		}
-		return strip_tags(r($_POST[$params]));
+		return $value;
 	} else {
-		error("data input $params kosong");
+		error("data input $params tidak boleh kosong");
 	}
 }
 
-function is_email($email)
+function post_null($params, $constrains = null)
 {
-	if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-		error("inputan email tidak valid");
-	}
-}
-
-function post_null($key)
-{
-	if (isset($_POST[$key])) {
-		return strip_tags($_POST[$key]);
+	if (isset($_POST[$params]) && $_POST[$params] !== "") {
+		$value = strip_tags(r($_POST[$params]));
+		if (!is_null($constrains)) {
+			$constrains = explode('|', $constrains);
+			foreach ($constrains as $method) {
+				if (strpos($method, '->')) {
+					$tmp = explode('->', $method);
+					$tmp[0]($params, $value, $tmp[1]);
+				} else
+					$method($params, $value);
+			}
+		}
+		return $value;
 	} else {
 		return "";
 	}
 }
+function max_char($params, $value, $length)
+{
+	if (strlen($value) > $length) {
+		error("$params lebih dari $length karakter");
+	}
+}
 
+
+function min_char($params, $value, $length)
+{
+	if (strlen($value) < $length) {
+		error("$params kurang dari $length karakter");
+	}
+}
+
+function is_email($params, $value)
+{
+	if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+		error("$params tidak valid sebagai email");
+	}
+}
 // --------------- helper message json
 function success($msg, $data)
 {
