@@ -18,8 +18,8 @@ class Agenda extends CI_Controller
 			"agenda_category_id" => post('agenda_category'),
 			"title" => post('title'),
 			"location" => post('location'),
-			"start_at" => tgl(post('start_at')),
-			"end_at" => tgl(post('end_at')),
+			"start_at" => post('start_at', 'date_now'),
+			"end_at" => post('end_at', 'date_now'),
 		);
 
 		$do = $this->data_model->insert($this->table, $data);
@@ -39,7 +39,13 @@ class Agenda extends CI_Controller
 		}
 
 		if (!$do->error) {
-			success("data berhasil ditemukan", $do->data);
+			$temp = array();
+			foreach ($do->data as $data) {
+				$data->waktu_mulai = tgl_indo($data->start_at);
+				$data->waktu_selesai = tgl_indo($data->end_at);
+				array_push($temp, $data);
+			}
+			success("data berhasil ditemukan", $temp);
 		} else {
 			error("data gagal ditemukan");
 		}
@@ -52,8 +58,8 @@ class Agenda extends CI_Controller
 			"agenda_category_id" => post('agenda_category'),
 			"title" => post('title'),
 			"location" => post('location'),
-			"start_at" => tgl(post('start_at')),
-			"end_at" => tgl(post('end_at')),
+			"start_at" => post('start_at', 'date_now'),
+			"end_at" => post('end_at', 'date_now'),
 		);
 
 		$where = array(
@@ -81,4 +87,5 @@ class Agenda extends CI_Controller
 			error("data gagal dihapus");
 		}
 	}
+
 }

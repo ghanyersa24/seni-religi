@@ -12,6 +12,33 @@ function r($value)
 }
 
 // --------------- helper tanggal
+function tgl_indo($tanggal)
+{
+	$bulan = array(
+		1 =>
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'Mei',
+		'Jun',
+		'Jul',
+		'Agt',
+		'Sep',
+		'Okt',
+		'Nov',
+		'Des'
+	);
+	$tgl = date('d-m-Y', strtotime($tanggal));
+	$pecahkan = explode('-', $tgl);
+	$waktu = array(
+		'tanggal' => $pecahkan[2],
+		'bulan' => $bulan[(int) $pecahkan[1]],
+		'tahun' => $pecahkan[0],
+		'jam' => date('H:i', strtotime($tanggal))
+	);
+	return $waktu;
+}
 function date_valid($params, $value)
 {
 	$check = strtotime($value);
@@ -43,7 +70,7 @@ function post($params, $constrains = null)
 		if (!is_null($constrains)) {
 			$constrains = explode('|', $constrains);
 			foreach ($constrains as $method) {
-				if (strpos($method, '->')) {
+				if (strpos($method, ':')) {
 					$tmp = explode('->', $method);
 					$tmp[0]($params, $value, $tmp[1]);
 				} else
@@ -63,8 +90,8 @@ function post_null($params, $constrains = null)
 		if (!is_null($constrains)) {
 			$constrains = explode('|', $constrains);
 			foreach ($constrains as $method) {
-				if (strpos($method, '->')) {
-					$tmp = explode('->', $method);
+				if (strpos($method, ':')) {
+					$tmp = explode(':', $method);
 					$tmp[0]($params, $value, $tmp[1]);
 				} else
 					$method($params, $value);

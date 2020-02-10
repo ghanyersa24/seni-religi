@@ -26,15 +26,14 @@ class Presensi_pengurus extends CI_Controller
 		}
 	}
 
-	public function get($id = null, $params = null)
+	public function get($id = null)
 	{
-		if ($params == 'nim') {
-			$do = $this->data_model->select_where($this->table, array("pengurus_nim" => $id));
-		} else if ($params == 'agenda') {
-			$do = $this->data_model->select_where($this->table, array("agenda_id" => $id));
-		} else {
+		if ($id == null) {
 			$do = $this->data_model->select($this->table);
+		} else {
+			$do = $this->data_model->select_one($this->table, array("id" => $id));
 		}
+
 		if (!$do->error) {
 			success("data berhasil ditemukan", $do->data);
 		} else {

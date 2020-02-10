@@ -37,7 +37,7 @@ class Db_model extends CI_Model
     public function select_one($table, $data)
     {
         $query = $this->db->where($data)->order_by("created_at", 'DESC')->get($table);
-        if ($query) {
+        if ($this->db->affected_rows() !== 0) {
             return true($query->row());
         } else {
             return false();
