@@ -55,9 +55,9 @@ class Agenda extends CI_Controller
 	public function get($id = null)
 	{
 		if ($id == null) {
-			$do = $this->data_model->select($this->table);
+			$do = $this->data_custom->all_agenda($this->table);
 		} else {
-			$do = $this->data_model->select_one($this->table, array("id" => $id));
+			$do = $this->data_custom->detail_agenda(array("agenda.id" => $id));
 		}
 
 		if (!$do->error) {

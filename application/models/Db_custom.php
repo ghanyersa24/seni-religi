@@ -67,7 +67,44 @@ class Db_custom extends CI_Model
 	}
 	public function recent_agenda()
 	{
-		$query = $this->db->where(array('start_at >' => date('Y-m-d')))->order_by("start_at", 'ASC')->get('agenda');
+		$query = $this->db
+			->select('agenda.*, pengurus.name as creator, agenda_category.name as category')
+			->from('agenda')
+			->join('pengurus', 'agenda.pengurus_nim=pengurus.nim')
+			->join('agenda_category', 'agenda_category.id=agenda.agenda_category_id')
+			->where(array('start_at >' => date('Y-m-d')))
+			->order_by("start_at", 'ASC')->get();
+		if ($query) {
+			return true($query->result());
+		} else {
+			return false();
+		}
+	}
+
+	public function all_agenda()
+	{
+		$query = $this->db
+			->select('agenda.*, pengurus.name as creator, agenda_category.name as category')
+			->from('agenda')
+			->join('pengurus', 'agenda.pengurus_nim=pengurus.nim')
+			->join('agenda_category', 'agenda_category.id=agenda.agenda_category_id')
+			->order_by("start_at", 'DESC')->get();
+		if ($query) {
+			return true($query->result());
+		} else {
+			return false();
+		}
+	}
+
+	public function detail_agenda($where)
+	{
+		$query = $this->db
+			->select('agenda.*, pengurus.name as creator, agenda_category.name as category')
+			->from('agenda')
+			->join('pengurus', 'agenda.pengurus_nim=pengurus.nim')
+			->join('agenda_category', 'agenda_category.id=agenda.agenda_category_id')
+			->where($where)
+			->order_by("start_at", 'ASC')->get();
 		if ($query) {
 			return true($query->result());
 		} else {

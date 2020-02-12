@@ -45,7 +45,7 @@ function date_valid($params, $value)
 	if ($check != false) {
 		return date("Y-m-d H:i:s", strtotime($value));
 	} else
-		error("$params tidak sesuai dengan ketentuan dd-mm-YYYY atau YYYY-mm-dd");
+		error("$params tidak sesuai dengan ketentuan YYYY-mm-dd");
 }
 
 function date_now($params, $value)
@@ -53,12 +53,12 @@ function date_now($params, $value)
 	$check = strtotime($value);
 	if ($check != false) {
 		if ($check > strtotime(date("Y-m-d")))
-			return date("Y-m-d H:i", strtotime($value));
+			return date("Y-m-d H:i:s", $check);
 		else {
 			error("waktu $params tidak bisa menggunakan waktu lampau");
 		}
 	} else
-		error("$params tidak sesuai dengan ketentuan dd-mm-YYYY atau YYYY-mm-dd");
+		error("$params tidak sesuai dengan ketentuan YYYY-mm-dd");
 }
 
 // --------------- helper inputan
