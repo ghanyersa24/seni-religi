@@ -18,8 +18,8 @@ class Agenda extends CI_Controller
 			"agenda_category_id" => post('agenda_category'),
 			"title" => post('title'),
 			"location" => post('location'),
-			"start_at" => post('start_at', 'date_now'),
-			"end_at" => post('end_at', 'date_now'),
+			"start_at" => post('mulai', 'date_now'),
+			"end_at" => post('selesai', 'date_now'),
 		);
 
 		$do = $this->data_model->insert($this->table, $data);
@@ -29,7 +29,29 @@ class Agenda extends CI_Controller
 			error("data gagal ditambahkan");
 		}
 	}
+	public function recent()
+	{
+		$do = $this->data_custom->recent_agenda();
+		if (!$do->error) {
+			$temp = array();
+			foreach ($do->data as $data) {
+				$now = date("Y-m-d H:i:s");
+				if ($data->start_at < $now && $now < $data->end_at)
+					$data->status = 'on going';
+				else if ($data->start_at > $now)
+					$data->status = 'soon';
+				else if ($now > $data->end_at)
+					$data->status = 'finish';
+				$data->waktu_mulai = tgl_indo($data->start_at);
+				$data->waktu_selesai = tgl_indo($data->end_at);
 
+				array_push($temp, $data);
+			}
+			success("data berhasil ditemukan", $temp);
+		} else {
+			error("data gagal ditemukan");
+		}
+	}
 	public function get($id = null)
 	{
 		if ($id == null) {
@@ -41,6 +63,13 @@ class Agenda extends CI_Controller
 		if (!$do->error) {
 			$temp = array();
 			foreach ($do->data as $data) {
+				$now = date("Y-m-d H:i:s");
+				if ($data->start_at < $now && $now < $data->end_at)
+					$data->status = 'on going';
+				else if ($data->start_at > $now)
+					$data->status = 'soon';
+				else if ($now > $data->end_at)
+					$data->status = 'finish';
 				$data->waktu_mulai = tgl_indo($data->start_at);
 				$data->waktu_selesai = tgl_indo($data->end_at);
 				array_push($temp, $data);
@@ -87,5 +116,4 @@ class Agenda extends CI_Controller
 			error("data gagal dihapus");
 		}
 	}
-
 }

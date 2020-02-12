@@ -13,8 +13,8 @@ class Pengurus extends CI_Controller
 	public function create()
 	{
 		if (post('role') !== 'PH' && post('role') !== 'ANGGOTA')
-			error(post('role').' bukan role dalam sistem');
-		$upload = $this->image_upload->to('profil', 'profil-'.post('nim'));
+			error(post('role') . ' bukan role dalam sistem');
+		// $upload = $this->image_upload->to('profil', 'profil-'.post('nim'));
 		$data = array(
 			"nim" => post('nim'),
 			"bidang_id" => post('bidang_id'),
@@ -24,9 +24,9 @@ class Pengurus extends CI_Controller
 			"faculty" => post('faculty'),
 			"study_program" => post('study_program'),
 			"ROLE" => post('role'),
-			"picture" => $upload,
+			// "picture" => $upload,
 		);
-		$nim = $this->data_model->select_where($this->table, array('nim' => post('nim')));
+		$nim = $this->data_model->select_one($this->table, array('nim' => post('nim')));
 		if (!$nim->error) {
 			error("nim sudah terdaftar");
 		} else {

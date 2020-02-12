@@ -12,7 +12,7 @@ class Db_model extends CI_Model
     public function select_where($table, $data)
     {
         $query = $this->db->where($data)->order_by("created_at", 'DESC')->get($table);
-        if ($this->db->affected_rows() !== 0) {
+		if ($query) {
             return true($query->result());
         } else {
             return false();

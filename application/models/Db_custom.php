@@ -56,4 +56,22 @@ class Db_custom extends CI_Model
 			return false();
 		}
 	}
+	public function login($where)
+	{
+		$query = $this->db->select('pengurus.*, bidang.nama as bidang')->from('pengurus')->join('bidang', 'bidang.id=pengurus.bidang_id')->where($where)->get();
+		if ($this->db->affected_rows() !== 0) {
+			return true($query->row());
+		} else {
+			return false();
+		}
+	}
+	public function recent_agenda()
+	{
+		$query = $this->db->where(array('start_at >' => date('Y-m-d')))->order_by("start_at", 'ASC')->get('agenda');
+		if ($query) {
+			return true($query->result());
+		} else {
+			return false();
+		}
+	}
 }

@@ -52,10 +52,10 @@ function date_now($params, $value)
 {
 	$check = strtotime($value);
 	if ($check != false) {
-		if ($check > strtotime(date("Y-m-d H:i:s")))
+		if ($check > strtotime(date("Y-m-d")))
 			return date("Y-m-d H:i", strtotime($value));
 		else {
-			error("$params yang dipilih tidak bisa digunakan");
+			error("waktu $params tidak bisa menggunakan waktu lampau");
 		}
 	} else
 		error("$params tidak sesuai dengan ketentuan dd-mm-YYYY atau YYYY-mm-dd");
