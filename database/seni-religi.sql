@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2020 at 11:59 AM
+-- Generation Time: Feb 16, 2020 at 09:33 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -39,18 +39,6 @@ CREATE TABLE `agenda` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `agenda`
---
-
-INSERT INTO `agenda` (`id`, `pengurus_nim`, `agenda_category_id`, `title`, `location`, `start_at`, `end_at`, `created_at`, `updated_at`) VALUES
-(1, '165150401111060', 1, 'Pembinaan 1', '', '2020-02-11 00:00:00', '2020-02-12 00:00:00', '2020-02-10 10:39:57', '2020-02-11 10:55:48'),
-(2, '165150401111060', 2, 'YKS 1', '', '2020-02-11 00:00:00', '2020-02-12 00:00:00', '2020-02-11 09:50:03', '2020-02-11 10:57:13'),
-(3, '165150401111060', 3, 'Piket 1', '', '2020-02-11 00:00:00', '2020-02-12 00:00:00', '2020-02-10 10:49:59', '2020-02-11 10:57:18'),
-(4, '165150401111060', 4, 'Muhadhoroh 1', '', '2020-02-11 00:00:00', '2020-02-12 00:00:00', '2020-02-12 10:49:55', '2020-02-11 10:57:23'),
-(5, '165150401111061', 5, 'Evaluasi www', '', '2020-02-11 00:00:00', '2020-02-12 00:00:00', '2020-02-10 10:49:51', '2020-02-11 10:57:32'),
-(6, '165150401111061', 6, 'Diklat 2', '', '2020-02-11 00:00:00', '2020-02-12 00:00:00', '2020-02-10 10:49:47', '2020-02-11 10:57:36');
 
 -- --------------------------------------------------------
 
@@ -117,7 +105,8 @@ CREATE TABLE `guest` (
 --
 
 INSERT INTO `guest` (`id`, `name`, `faculty`, `study_program`, `created_at`, `updated_at`) VALUES
-(2, 'Ghany Abdillah Ersa', 'filkom', 'information system', '2020-02-04 04:33:00', '2020-02-11 10:58:24');
+(2, 'Ghany Abdillah Ersa', 'filkom', 'information system', '2020-02-04 04:33:00', '2020-02-11 10:58:24'),
+(3, 'Ghany Ersa', 'filkom', 'information system', '2020-02-14 03:32:32', '2020-02-14 03:32:32');
 
 -- --------------------------------------------------------
 
@@ -144,8 +133,9 @@ CREATE TABLE `pengurus` (
 --
 
 INSERT INTO `pengurus` (`nim`, `bidang_id`, `password`, `name`, `birthday_date`, `faculty`, `study_program`, `role`, `picture`, `created_at`, `updated_at`) VALUES
-('165150401111060', 2, '$2y$10$Nh/wgFNwSJYikSTDxQrlTuKSH1w41ANJaNBPIDWvn8rnhmBuinfLi', 'ghany abdillah ersa A', '1997-12-24', 'filkom', 'information system', 'ANGGOTA', 'C:/xampp/htdocs/seni-religi/uploads/profil/2020-02-11_16_51_profil-1651504011110601.jpg', '2020-01-02 10:42:24', '2020-02-11 10:58:45'),
-('165150401111061', 2, '$2y$10$ylWY2q0DLtBQZBdsFUGnI.1RG4.bsD8Py7238i7kwysJUxvY/QOgC', 'ghany abdillah ersa B', '1997-12-24', 'filkom', 'information system', 'PH', 'C:/xampp/htdocs/seni-religi/uploads/profil/2020-02-04_11_42_profil-165150401111061.jpg', '2020-01-02 04:50:44', '2020-02-11 10:58:48');
+('165150401111060', 2, '$2y$10$9puUTdnk4plIUgmZKkuq6u7m8gxyRdaZAbNjScprnKgasqtlmfc3u', 'ghany Update', '1997-12-24', 'filkom', 'information system', 'ANGGOTA', 'C:/xampp/htdocs/seni-religi/uploads/profil/2020-02-11_16_51_profil-1651504011110601.jpg', '2020-01-02 10:42:24', '2020-02-16 08:23:07'),
+('165150401111061', 2, '$2y$10$ylWY2q0DLtBQZBdsFUGnI.1RG4.bsD8Py7238i7kwysJUxvY/QOgC', 'ghany abdillah ersa B', '1997-12-24', 'filkom', 'information system', 'PH', 'C:/xampp/htdocs/seni-religi/uploads/profil/2020-02-04_11_42_profil-165150401111061.jpg', '2020-01-02 04:50:44', '2020-02-11 10:58:48'),
+('165150401111063', 2, '$2y$10$QNzc1qle2n2zwNoodgQUwuXJbiES8XMG0o0WUD4VTdsCsWoJxKM1m', 'ghany abdillah ersa', '1997-12-24', 'filkom', 'information system', 'PH', NULL, '2020-02-12 03:40:14', '2020-02-12 03:40:14');
 
 -- --------------------------------------------------------
 
@@ -154,7 +144,6 @@ INSERT INTO `pengurus` (`nim`, `bidang_id`, `password`, `name`, `birthday_date`,
 --
 
 CREATE TABLE `presensi_guest` (
-  `id` int(10) UNSIGNED NOT NULL,
   `agenda_id` int(10) UNSIGNED NOT NULL,
   `guest_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -168,7 +157,6 @@ CREATE TABLE `presensi_guest` (
 --
 
 CREATE TABLE `presensi_pengurus` (
-  `id` int(10) UNSIGNED NOT NULL,
   `pengurus_nim` varchar(15) NOT NULL,
   `agenda_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -216,7 +204,7 @@ ALTER TABLE `pengurus`
 -- Indexes for table `presensi_guest`
 --
 ALTER TABLE `presensi_guest`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`agenda_id`,`guest_id`),
   ADD KEY `presensi_guest_FKIndex1` (`guest_id`),
   ADD KEY `presensi_guest_FKIndex2` (`agenda_id`);
 
@@ -224,7 +212,7 @@ ALTER TABLE `presensi_guest`
 -- Indexes for table `presensi_pengurus`
 --
 ALTER TABLE `presensi_pengurus`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`pengurus_nim`,`agenda_id`),
   ADD KEY `presensi_pengurus_FKIndex1` (`agenda_id`),
   ADD KEY `presensi_pengurus_FKIndex2` (`pengurus_nim`);
 
@@ -236,7 +224,7 @@ ALTER TABLE `presensi_pengurus`
 -- AUTO_INCREMENT for table `agenda`
 --
 ALTER TABLE `agenda`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `agenda_category`
@@ -254,19 +242,7 @@ ALTER TABLE `bidang`
 -- AUTO_INCREMENT for table `guest`
 --
 ALTER TABLE `guest`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `presensi_guest`
---
-ALTER TABLE `presensi_guest`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `presensi_pengurus`
---
-ALTER TABLE `presensi_pengurus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -290,13 +266,13 @@ ALTER TABLE `pengurus`
 --
 ALTER TABLE `presensi_guest`
   ADD CONSTRAINT `presensi_guest_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `guest` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `presensi_guest_ibfk_2` FOREIGN KEY (`agenda_id`) REFERENCES `agenda` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `presensi_guest_ibfk_2` FOREIGN KEY (`agenda_id`) REFERENCES `agenda` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `presensi_pengurus`
 --
 ALTER TABLE `presensi_pengurus`
-  ADD CONSTRAINT `presensi_pengurus_ibfk_1` FOREIGN KEY (`agenda_id`) REFERENCES `agenda` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `presensi_pengurus_ibfk_1` FOREIGN KEY (`agenda_id`) REFERENCES `agenda` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `presensi_pengurus_ibfk_2` FOREIGN KEY (`pengurus_nim`) REFERENCES `pengurus` (`nim`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 

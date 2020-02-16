@@ -64,27 +64,6 @@ function date_now($params, $value)
 // --------------- helper inputan
 function post($params, $constrains = null)
 {
-
-	if (isset($_POST[$params]) && $_POST[$params] !== "") {
-		$value = strip_tags(r($_POST[$params]));
-		if (!is_null($constrains)) {
-			$constrains = explode('|', $constrains);
-			foreach ($constrains as $method) {
-				if (strpos($method, ':')) {
-					$tmp = explode('->', $method);
-					$tmp[0]($params, $value, $tmp[1]);
-				} else
-					$method($params, $value);
-			}
-		}
-		return $value;
-	} else {
-		error("data input $params tidak boleh kosong");
-	}
-}
-
-function post_null($params, $constrains = null)
-{
 	if (isset($_POST[$params]) && $_POST[$params] !== "") {
 		$value = strip_tags(r($_POST[$params]));
 		if (!is_null($constrains)) {
@@ -99,9 +78,11 @@ function post_null($params, $constrains = null)
 		}
 		return $value;
 	} else {
-		return "";
+		$params = str_dash($params);
+		error("data input $params tidak boleh kosong");
 	}
 }
+
 function max_char($params, $value, $length)
 {
 	if (strlen($value) > $length) {
@@ -109,6 +90,34 @@ function max_char($params, $value, $length)
 	}
 }
 
+function same($params, $value, $check)
+{
+	if (post($check) !== $value) {
+		$params = str_dash($params);
+		$check = str_dash($check);
+		error("$params tidak cocok dengan $check");
+	}
+	return $value;
+}
+function greater($params, $value, $check)
+{
+	$a = post($check);
+	$b = $value;
+	if (strtotime($a) != false || strtotime($b) != false) {
+		$a = strtotime($a);
+		$b = strtotime($b);
+	}
+	if ($b <= $a) {
+		$params = str_dash($params);
+		$check = str_dash($check);
+		error("$params harus lebih besar dari $check");
+	}
+}
+
+function str_dash($value)
+{
+	return str_replace("_", " ", $value);
+}
 
 function min_char($params, $value, $length)
 {

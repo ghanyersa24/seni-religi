@@ -40,14 +40,27 @@ class Db_custom extends CI_Model
 			return false();
 		}
 	}
-
+	public function report_agenda_guest($id)
+	{
+		$query = $this->db
+			->select("guest.id,name, faculty, study_program, 'TAMU' as role, presensi_guest.created_at as kehadiran")
+			->from('presensi_guest')
+			->join('guest', 'guest.id=presensi_guest.guest_id')
+			->where("presensi_guest.agenda_id=$id")
+			->get();
+		if ($query) {
+			return true($query->result());
+		} else {
+			return false();
+		}
+	}
 	public function report_agenda($id)
 	{
 		$query = $this->db
 			->select('nim, name, faculty, study_program, role, presensi_pengurus.created_at as kehadiran')
 			->from('presensi_pengurus')
 			->join('pengurus', 'presensi_pengurus.pengurus_nim=pengurus.nim')
-			->where("agenda_id = $id UNION (select guest.id,name, 'seni-religi','seni-religi', 'TAMU', presensi_guest.created_at as kehadiran from presensi_guest join guest on guest.id=presensi_guest.guest_id where presensi_guest.agenda_id=$id)")
+			->where("agenda_id = $id")
 			->get();
 
 		if ($query) {

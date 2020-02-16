@@ -8,7 +8,7 @@ class Pengurus extends CI_Controller
 	{
 		parent::__construct();
 		// additional library
-		$this->load->library('image_upload');
+		// $this->load->library('image_upload');
 	}
 	public function create()
 	{
@@ -54,50 +54,53 @@ class Pengurus extends CI_Controller
 		}
 	}
 
-	private function pass_is_same($where, $pass)
-	{
-		$do = $this->data_model->select_one($this->table, $where);
-		if (!$do->error) {
-			if ($pass == $do->data->password) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			error("data password gagal ditemukan");
-		}
-	}
 	public function update()
 	{
-		if (post('role') != 'PH' && post('role') != 'ANGGOTA')
-			error("role harus sesuai ketentuan");
 		$data = array(
 			"bidang_id" => post('bidang_id'),
 			"name" => post('name'),
 			"birthday_date" => post('birthday'),
 			"faculty" => post('faculty'),
 			"study_program" => post('study_program'),
-			"ROLE" => post('role'),
 		);
 
 		$where = array(
 			"nim" => post('nim'),
 		);
 
-		if ($this->pass_is_same($where, post('password')) == false) {
-			$data['password'] = password_hash(post('password'), PASSWORD_DEFAULT, array('cost' => 10));
-		}
-
-		if (!empty($_FILES['name'])) {
-			$upload = $this->image_upload->to('profil', 'title');
-			$data['picture'] = $upload;
-		}
-
 		$do = $this->data_model->update($this->table, $where, $data);
 		if (!$do->error) {
 			success("data berhasil diubah", $do->data);
 		} else {
 			error("data gagal diubah");
+		}
+	}
+	public function update_password()
+	{
+		$where = array(
+			"nim" => post('nim'),
+		);
+		$new_password = post("new_password");
+		$confirm_password = post("confirmation_password", "same:new_password");
+
+		$do = $this->data_custom->login($where);
+		if ($do->error) {
+			error("ada yang salah dengan akun kamu.");
+		} else {
+			if (password_verify(post("password"), $do->data->password)) {
+				$data = array(
+					'nim' => $do->data->nim,
+					'password' => password_hash($new_password, PASSWORD_DEFAULT, array('cost' => 10))
+				);
+
+				$do = $this->data_model->update($this->table, $where, $data);
+				if (!$do->error) {
+					success("password berhasil diubah", $do->data);
+				} else {
+					error("password gagal diubah");
+				}
+			} else
+				error("password lama salah.");
 		}
 	}
 

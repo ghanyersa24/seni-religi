@@ -19,9 +19,8 @@ class Agenda extends CI_Controller
 			"title" => post('title'),
 			"location" => post('location'),
 			"start_at" => post('mulai', 'date_now'),
-			"end_at" => post('selesai', 'date_now'),
+			"end_at" => post('selesai', 'date_now|greater:mulai'),
 		);
-
 		$do = $this->data_model->insert($this->table, $data);
 		if (!$do->error) {
 			success("data berhasil ditambahkan", $do->data);

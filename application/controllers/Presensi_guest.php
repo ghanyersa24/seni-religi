@@ -18,6 +18,9 @@ class Presensi_guest extends CI_Controller
 			"agenda_id" => post('agenda_id'),
 		);
 
+		$check = $this->data_model->select_one($this->table, $data);
+		if (!$check->error)
+			error("pengguna sudah melakukan presensi");
 		$do = $this->data_model->insert($this->table, $data);
 		if (!$do->error) {
 			success("data berhasil ditambahkan", $do->data);
@@ -61,17 +64,17 @@ class Presensi_guest extends CI_Controller
 	// 	}
 	// }
 
-	public function delete()
-	{
-		$where = array(
-			"id" => post('id')
-		);
+	// public function delete()
+	// {
+	// 	$where = array(
+	// 		"id" => post('id')
+	// 	);
 
-		$do = $this->data_model->delete($this->table, $where);
-		if (!$do->error) {
-			success("data berhasil dihapus", $do->data);
-		} else {
-			error("data gagal dihapus");
-		}
-	}
+	// 	$do = $this->data_model->delete($this->table, $where);
+	// 	if (!$do->error) {
+	// 		success("data berhasil dihapus", $do->data);
+	// 	} else {
+	// 		error("data gagal dihapus");
+	// 	}
+	// }
 }

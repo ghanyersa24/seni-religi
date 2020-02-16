@@ -11,10 +11,7 @@ class Login extends CI_Controller
 			error("username and password isn't match");
 		} else {
 			if (password_verify(post("password"), $do->data->password))
-				// if ($do->data->status == 'activated') {
 				success("waiting a minute ...", $do->data);
-			// } else
-			// error("sorry, this account isn't activate");
 			else
 				error("username and password isn't match");
 		}
