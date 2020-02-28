@@ -38,14 +38,14 @@ class Image_upload
     else
       $config['encrypt_name'] = true;
 
-    $config['allowed_types'] = 'gif|jpg|png|JPG';
+    $config['allowed_types'] = 'gif|jpg|png|JPG|jpeg';
 
     $this->ci->load->library('upload', $config);
     $this->ci->upload->initialize($config);
 
     $upload_status = $this->ci->upload->do_upload('picture');
     $upload_message = strip_tags($this->ci->upload->display_errors());
-    $upload_location = $this->ci->upload->data("full_path");
+    $upload_location = base_url()."uploads/$location/".$this->ci->upload->data("file_name");
       if ($upload_status)
         return $upload_location;
       else

@@ -34,9 +34,9 @@ class Db_model extends CI_Model
 		return true($this->db->limit($limit)->order_by("created_at", 'DESC')->get($table)->result());
 	}
 
-	public function select_one($table, $where)
+	public function select_one($table, $data)
 	{
-		$query = $this->db->where($where)->order_by("created_at", 'DESC')->get($table);
+		$query = $this->db->where($data)->order_by("created_at", 'DESC')->get($table);
 		if ($this->db->affected_rows() !== 0) {
 			return true($query->row());
 		} else {
@@ -46,7 +46,6 @@ class Db_model extends CI_Model
 
 	public function insert($table, $data)
 	{
-
 		$query = $this->db->insert($table, $data);
 		if ($query) {
 			$data['id'] = $this->db->insert_id();
@@ -70,7 +69,7 @@ class Db_model extends CI_Model
 	{
 		$query = $this->db->where($where)->update($table, $data);
 		// if ($this->db->affected_rows() !== 0) {
-		return true($query);
+		return true($data);
 		// } else {
 		//     return false();
 		// }

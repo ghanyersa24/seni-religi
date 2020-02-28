@@ -8,7 +8,7 @@ class Pengurus extends CI_Controller
 	{
 		parent::__construct();
 		// additional library
-		// $this->load->library('image_upload');
+		$this->load->library('image_upload');
 	}
 	public function create()
 	{
@@ -20,6 +20,7 @@ class Pengurus extends CI_Controller
 			"bidang_id" => post('bidang_id'),
 			"password" =>  password_hash(post('password'), PASSWORD_DEFAULT, array('cost' => 10)),
 			"name" => post('name'),
+			"jenis_kelamin" => post('jenis_kelamin'),
 			"birthday_date" => post('birthday'),
 			"faculty" => post('faculty'),
 			"study_program" => post('study_program'),
@@ -59,10 +60,15 @@ class Pengurus extends CI_Controller
 		$data = array(
 			"bidang_id" => post('bidang_id'),
 			"name" => post('name'),
+			"jenis_kelamin" => post('jenis_kelamin'),
 			"birthday_date" => post('birthday'),
 			"faculty" => post('faculty'),
 			"study_program" => post('study_program'),
 		);
+		if (!empty($_FILES['picture'])) {
+			$upload = $this->image_upload->to('profil', 'profil-' . post('nim'));
+			$data['picture'] = $upload;
+		}
 
 		$where = array(
 			"nim" => post('nim'),

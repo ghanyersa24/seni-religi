@@ -64,17 +64,18 @@ class Presensi_guest extends CI_Controller
 	// 	}
 	// }
 
-	// public function delete()
-	// {
-	// 	$where = array(
-	// 		"id" => post('id')
-	// 	);
+	public function delete()
+	{
+		$where = array(
+			"guest_id" => post('guest_id'),
+			"agenda_id" => post('agenda_id'),
+		);
 
-	// 	$do = $this->data_model->delete($this->table, $where);
-	// 	if (!$do->error) {
-	// 		success("data berhasil dihapus", $do->data);
-	// 	} else {
-	// 		error("data gagal dihapus");
-	// 	}
-	// }
+		$do = $this->data_model->delete($this->table, $where);
+		if (!$do->error) {
+			success("data berhasil dihapus", $do->data);
+		} else {
+			error("data gagal dihapus");
+		}
+	}
 }
